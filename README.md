@@ -6,20 +6,28 @@
 
 This project implements a Convolutional Neural Network (CNN) for binary image classification. The model features automated data preprocessing, GPU optimization, and comprehensive evaluation metrics.
 
+Please keep in mind that this project was made a long, **long**, time ago. I did my best to explain it here.
+<br>
+It's also quite small and not nearly as sophisticated as I would probably make it today.
+
 ## 🔢 Mathematical Foundation
 
 ### Data Preprocessing
 Image scaling is performed using:
 
-$X_{scaled} = \frac{X}{255}$
+```math
+X_{scaled} = \frac{X}{255}
+```
 
-**Where:**
+**Where**
 
-$X$ is the input image pixel matrix values
+- $X$ is the input image pixel matrix values
 
 **And**
 
-$X \in \mathbb{R}^{H \times W \times 3}$
+```math
+X \in \mathbb{R}^{H \times W \times 3}
+```
 
 - $H$ is the height (number of rows)
 - $W$ is the width (number of columns)
@@ -27,63 +35,71 @@ $X \in \mathbb{R}^{H \times W \times 3}$
 
 Each pixel at position $(i, j)$ is a vector:
 
-$X_{i,j} = \begin{bmatrix} R & G & B \end{bmatrix}$
+```math
+X_{i,j} = \begin{bmatrix} R & G & B \end{bmatrix}
+```
 
 Here's a representation of what this looks like:
 ```python
-[[[  0  61  82 255]
-  [  2  63  81 255]
-  [  1  64  79 255]
+[[[  0  61  82]
+  [  2  63  81]
+  [  1  64  79]
   ...
-  [  0   0   0 255]
-  [  0   0   0 255]
-  [  0   1   0 255]]
+  [  0   0   0]
+  [  0   0   0]
+  [  0   1   0]]
 
- [[  2  64  83 255]
-  [  2  64  81 255]
-  [  1  64  78 255]
+ [[  2  64  83]
+  [  2  64  81]
+  [  1  64  78]
   ...
-  [  0   0   0 255]
-  [  0   1   0 255]
-  [  1   1   1 255]]
+  [  0   0   0]
+  [  0   1   0]
+  [  1   1   1]]
 
  ...
 
- [[  0   1   0 255]
-  [  0   0   0 255]
-  [  0   0   0 255]
+ [[  0   1   0]
+  [  0   0   0]
+  [  0   0   0]
   ...
-  [ 34  22  62 255]
-  [ 35  24  63 255]
-  [ 37  24  64 255]]]
+  [ 34  22  62]
+  [ 35  24  63]
+  [ 37  24  64]]]
 ```
 
-Note that this here is an `RGBA` pixel matrix,
-<br>
-the alpha channel is automatically discarded later.
+###### _Note that an `RGBA` vector would just discard the 4th channel._
 
 ### Model Metrics
 The model uses three key metrics:
 1. Binary Accuracy:
 
-$Accuracy = \frac{TP + TN}{TP + TN + FP + FN}$
+```math
+\frac{TP + TN}{TP + TN + FP + FN}
+```
 
 2. Precision:
 
-$Precision = \frac{TP}{TP + FP}$
+```math
+\frac{TP}{TP + FP}
+```
 
 3. Recall:
 
-$Recall = \frac{TP}{TP + FN}$
+```math
+\frac{TP}{TP + FN}
+```
 
 **Where:**
 
-$\begin{aligned}
+```math
+\begin{aligned}
 TP &= |\{x \in \mathbb{D} \mid x \text{ is positive and classified as positive}\}| \\
 TN &= |\{x \in \mathbb{D} \mid x \text{ is negative and classified as negative}\}| \\
 FP &= |\{x \in \mathbb{D} \mid x \text{ is negative but classified as positive}\}| \\
 FN &= |\{x \in \mathbb{D} \mid x \text{ is positive but classified as negative}\}|
-\end{aligned}$
+\end{aligned}
+```
 
 ### Activation Functions
 
@@ -91,14 +107,16 @@ FN &= |\{x \in \mathbb{D} \mid x \text{ is positive but classified as negative}\
 
 The model applies the **Rectified Linear Unit (ReLU)** activation function
 to virtually all hidden layers, except for the last dense layer.
-<br>
+<br><br>
 The **ReLU** function is defined as:
 
-$ReLU(x) = x^+ = \frac{x + |x|}{2} =
+```math
+ReLU(x) = x^+ = \frac{x + |x|}{2} =
 \begin{cases} 
 0 & \text{if } x \leq 0 \\ 
 x & \text{if } x > 0
-\end{cases}$
+\end{cases}
+```
 
 **Properties:**
 - Domain: $x \in \mathbb{R}$
@@ -123,15 +141,21 @@ Generally speaking, its because it provides a clear binary output.
 <br><br>
 The **Sigmoid** function is defined as:
 
-$f(x) = \frac{L}{1 + e^{-k(x-x_0)}}$
+```math
+f(x) = \frac{L}{1 + e^{-k(x-x_0)}}
+```
 
 **Where:**
 
-$L = 1, k = 1, x_0 = 0 \\$
+```math
+L = 1, k = 1, x_0 = 0
+```
 
 **Applying these to the equation:**
 
-$f(x) = \frac{1}{1 + e^{-x}}$
+```math
+f(x) = \frac{1}{1 + e^{-x}}
+```
 
 **Plotting this function out:**
 
@@ -151,15 +175,25 @@ The model makes use of the adam optimizer, Adam is a powerful optimization algor
 <br>
 The algorithm updates the weights using the following equations:
 
-$\mathbf{m}t = \beta_1\mathbf{m}{t-1} + (1-\beta_1)\nabla_{\theta}J(\theta_{t-1})$
+```math
+\mathbf{m}t = \beta_1\mathbf{m}{t-1} + (1-\beta_1)\nabla_{\theta}J(\theta_{t-1})
+```
 
-$\mathbf{v}t = \beta_2\mathbf{v}{t-1} + (1-\beta_2)(\nabla_{\theta}J(\theta_{t-1}))^2$
+```math
+\mathbf{v}t = \beta_2\mathbf{v}{t-1} + (1-\beta_2)(\nabla_{\theta}J(\theta_{t-1}))^2
+```
 
-$\hat{\mathbf{m}}_t = \frac{\mathbf{m}_t}{1-\beta_1^t}$
+```math
+\hat{\mathbf{m}}_t = \frac{\mathbf{m}_t}{1-\beta_1^t}
+```
 
-$\hat{\mathbf{v}}_t = \frac{\mathbf{v}_t}{1-\beta_2^t}$
+```math
+\hat{\mathbf{v}}_t = \frac{\mathbf{v}_t}{1-\beta_2^t}
+```
 
-$\theta_t = \theta_{t-1} - \alpha\frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon}$
+```math
+\theta_t = \theta_{t-1} - \alpha\frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon}
+```
 
 **Where:**
 - $\mathbf{m}_t$: First moment estimate
@@ -189,16 +223,25 @@ It measures how well the model's predicted probability distribution matches the 
 
 **Its defined as:**
 
-$L = -\frac{1}{N}\sum_{i=1}^{N}[y_ilog(\hat{y}_i)+(1-y_i)log(1-\hat{y}_i)]$
+```math
+L = -\frac{1}{N}\sum_{i=1}^{N}[y_ilog(\hat{y}_i)+(1-y_i)log(1-\hat{y}_i)]
+```
 
 For binary classification with predicted probability $\hat{y}$ and true label $y$:
 
-$\mathcal{L}(y, \hat{y}) = -[y\log(\hat{y}) + (1-y)\log(1-\hat{y})]$
+```math
+\mathcal{L}(y, \hat{y}) = -[y\log(\hat{y}) + (1-y)\log(1-\hat{y})]
+```
 
-Properties:
+**Properties:**
 - Domain: $y \in \{0,1\}, \hat{y} \in (0,1)$
 - Range: $[0, \infty)$
-- Derivative with respect to logits: $\frac{\partial \mathcal{L}}{\partial \hat{y}} = \frac{\hat{y} - y}{\hat{y}(1-\hat{y})}$
+
+**Derivative with respect to logits:**
+
+```math
+\frac{\partial \mathcal{L}}{\partial \hat{y}} = \frac{\hat{y} - y}{\hat{y}(1-\hat{y})}
+```
 
 **Logic Flow:**
 
@@ -218,21 +261,29 @@ flowchart LR
 
 *Conv2D:*
 
-$f_1(\mathbf{X}) = \text{ReLU}(\mathbf{W}_1 * \mathbf{X} + \mathbf{b}_1)$
+```math
+f_1(\mathbf{X}) = \text{ReLU}(\mathbf{W}_1 * \mathbf{X} + \mathbf{b}_1)
+```
 
 *Kernel:*
 
-$\mathbf{W}_1 \in \mathbb{R}^{3 \times 3 \times 3 \times 16}$
+```math
+\mathbf{W}_1 \in \mathbb{R}^{3 \times 3 \times 3 \times 16}
+```
 
-*MaxPooling:*
+*MaxPooling2D:*
 
-$\text{pool}_1(f_1)(m,n) = \begin{cases}\max\limits_{(i,j)\in W}f_1(i,j) & \text{if }(i,j)\in W_{m,n}\\
+```math
+\text{pool}_1(f_1)(m,n) = \begin{cases}\max\limits_{(i,j)\in W}f_1(i,j) & \text{if }(i,j)\in W_{m,n}\\
 0 & \text{otherwise}
-\end{cases}$
+\end{cases}
+```
 
 *Simplifying:*
 
-$\text{pool}_1(f_1)(m,n) = \max\limits_{(i,j)\in W}f_1(i,j)$
+```math
+\text{pool}_1(f_1)(m,n) = \max\limits_{(i,j)\in W}f_1(i,j)
+```
 
 Consider the same for the other two convolution blocks,
 <br>
@@ -242,16 +293,24 @@ except the amount of neurons and parameters change.
 
 *Flatten:*
 
-$\text{flat}(\text{pool}_3) \in \mathbb{R}^{16384}$
+```math
+\text{flat}(\text{pool}_3) \in \mathbb{R}^{16384}
+```
 
 *Dense Layer:*
-- $h_1(\text{flat}) = \text{ReLU}(\mathbf{W}_4\text{flat} + \mathbf{b}_4)$
-- $\mathbf{W}_4 \in \mathbb{R}^{16384 \times 256}$
+
+```math
+h_1(\text{flat}) = \text{ReLU}(\mathbf{W}_4\text{flat} + \mathbf{b}_4)\\
+\mathbf{W}_4 \in \mathbb{R}^{16384 \times 256}
+```
 
 *Output Layer:*
-- $y(\mathbf{h}_1) = \sigma(\mathbf{W}_5\mathbf{h}_1 + \mathbf{b}_5)$
-- $\mathbf{W}_5 \in \mathbb{R}^{256 \times 1}$
-- $\sigma(x) = \frac{1}{1 + e^{-x}}$
+
+```math
+y(\mathbf{h}_1) = \sigma(\mathbf{W}_5\mathbf{h}_1 + \mathbf{b}_5)\\
+\mathbf{W}_5 \in \mathbb{R}^{256 \times 1}\\
+\sigma(x) = \frac{1}{1 + e^{-x}}
+```
 
 ## 🛠 Architecture
 
@@ -281,10 +340,10 @@ $\mathbf{X} \in \mathbb{R}^{256 \times 256 \times 3}$
 ###### _It kinda looks like a cool jellyfish!_
 <img src="img/NeuralNetwork.png" alt="Visualization" width="700">
 
-### AlexNet Style
+### AlexNet Style Visualization
 <img src="img/AlexNet.png" alt="Visualization">
 
-### LeNet Style
+### LeNet Style Visualization
 ###### _Note that the 14400 sized vector is missing here because its just too large_
 <img src="img/LeNet.png" alt="Visualization" width="700">
 
