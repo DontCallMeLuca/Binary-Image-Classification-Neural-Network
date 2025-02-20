@@ -74,7 +74,8 @@ class Model:
 			self._summarize()
 		else:
 			self.model: Sequential = Sequential()
-			self._build_model(); self._compile()
+			self._build_model()
+			self._compile()
 			self._summarize()
 			train: tf.data.Dataset
 			val: tf.data.Dataset
@@ -106,7 +107,7 @@ class Model:
 		return self.model.fit(train_data, epochs=30, validation_data=val_data,
 			callbacks=[tf.keras.callbacks.TensorBoard(log_dir=self.logdir)])
 
-	def _predict(self, X: Iterable) -> Any:
+	def predict(self, X: Iterable) -> Any:
 		return self.model.predict(X)
 
 	def evaluate_model(self, test_data: tf.data.Dataset) -> Tuple[float,
@@ -115,7 +116,7 @@ class Model:
 		pre = Precision(); re = Recall(); acc = BinaryAccuracy()
 		for batch in test_data.as_numpy_iterator(): 
 			X, y = batch
-			yhat = self._predict(X)
+			yhat = self.predict(X)
 			pre.update_state(y, yhat)
 			re.update_state(y, yhat)
 			acc.update_state(y, yhat)
