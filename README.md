@@ -321,7 +321,6 @@ I feel I don't need to state the obvious on how this could be useful.
 You can find the dataset here: [Dataset](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia)
 
 ### Results
-Here's the results:
 - Accuracy: 99.91%
 - Loss: 0.3%
 - Epochs: 30
