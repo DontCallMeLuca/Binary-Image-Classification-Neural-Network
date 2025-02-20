@@ -16,7 +16,7 @@ def prep_gpus() -> None:
 
 class Data:
 
-	def __init__(self, categoryA: str, categoryB: str, path: str = 'data') -> None:
+	def __init__(self, categoryA: str, categoryB: str, path: str = '../data') -> None:
 		self.categoryA: str = fr'{os.path.dirname(os.path.realpath(__file__))}\{path}\{categoryA}'
 		self.categoryB: str = fr'{os.path.dirname(os.path.realpath(__file__))}\{path}\{categoryB}'
 
@@ -25,7 +25,8 @@ class Data:
 		self._clean(os.listdir(self.categoryA), self.categoryA)
 		self._clean(os.listdir(self.categoryB), self.categoryB)
 
-		self.pipeline = tf.keras.utils.image_dataset_from_directory(path)
+		self.pipeline = tf.keras.utils.image_dataset_from_directory(
+			fr'{os.path.dirname(os.path.realpath(__file__))}\{path}')
 		self._iter = self.pipeline.as_numpy_iterator()
 
 	@property
