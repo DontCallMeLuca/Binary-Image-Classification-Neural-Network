@@ -11,9 +11,7 @@ This project implements a Convolutional Neural Network (CNN) for binary image cl
 ### Data Preprocessing
 Image scaling is performed using:
 
-$
-X_{scaled} = \frac{X}{255}
-$
+$X_{scaled} = \frac{X}{255}$
 
 **Where:**
 
@@ -21,9 +19,7 @@ $X$ is the input image pixel matrix values
 
 **And**
 
-$
-X \in \mathbb{R}^{H \times W \times 3}
-$
+$X \in \mathbb{R}^{H \times W \times 3}$
 
 - $H$ is the height (number of rows)
 - $W$ is the width (number of columns)
@@ -31,9 +27,7 @@ $
 
 Each pixel at position $(i, j)$ is a vector:
 
-$
-X_{i,j} = \begin{bmatrix} R & G & B \end{bmatrix}
-$
+$X_{i,j} = \begin{bmatrix} R & G & B \end{bmatrix}$
 
 Here's a representation of what this looks like:
 ```python
@@ -72,32 +66,24 @@ the alpha channel is automatically discarded later.
 The model uses three key metrics:
 1. Binary Accuracy:
 
-$
-Accuracy = \frac{TP + TN}{TP + TN + FP + FN}
-$
+$Accuracy = \frac{TP + TN}{TP + TN + FP + FN}$
 
 2. Precision:
 
-$
-Precision = \frac{TP}{TP + FP}
-$
+$Precision = \frac{TP}{TP + FP}$
 
 3. Recall:
 
-$
-Recall = \frac{TP}{TP + FN}
-$
+$Recall = \frac{TP}{TP + FN}$
 
 **Where:**
 
-$
-\begin{aligned}
+$\begin{aligned}
 TP &= |\{x \in \mathbb{D} \mid x \text{ is positive and classified as positive}\}| \\
 TN &= |\{x \in \mathbb{D} \mid x \text{ is negative and classified as negative}\}| \\
 FP &= |\{x \in \mathbb{D} \mid x \text{ is negative but classified as positive}\}| \\
 FN &= |\{x \in \mathbb{D} \mid x \text{ is positive but classified as negative}\}|
-\end{aligned}
-$
+\end{aligned}$
 
 ### Activation Functions
 
@@ -108,13 +94,11 @@ to virtually all hidden layers, except for the last dense layer.
 <br>
 The **ReLU** function is defined as:
 
-$
-ReLU(x) = x^+ = \frac{x + |x|}{2} =
+$ReLU(x) = x^+ = \frac{x + |x|}{2} =
 \begin{cases} 
 0 & \text{if } x \leq 0 \\ 
 x & \text{if } x > 0
-\end{cases}
-$
+\end{cases}$
 
 **Properties:**
 - Domain: $x \in \mathbb{R}$
@@ -139,21 +123,15 @@ Generally speaking, its because it provides a clear binary output.
 <br><br>
 The **Sigmoid** function is defined as:
 
-$
-f(x) = \frac{L}{1 + e^{-k(x-x_0)}}
-$
+$f(x) = \frac{L}{1 + e^{-k(x-x_0)}}$
 
 **Where:**
 
-$
-L = 1, k = 1, x_0 = 0 \\
-$
+$L = 1, k = 1, x_0 = 0 \\$
 
 **Applying these to the equation:**
 
-$
-f(x) = \frac{1}{1 + e^{-x}}
-$
+$f(x) = \frac{1}{1 + e^{-x}}$
 
 **Plotting this function out:**
 
@@ -173,25 +151,15 @@ The model makes use of the adam optimizer, Adam is a powerful optimization algor
 <br>
 The algorithm updates the weights using the following equations:
 
-$
-\mathbf{m}t = \beta_1\mathbf{m}{t-1} + (1-\beta_1)\nabla_{\theta}J(\theta_{t-1})
-$
+$\mathbf{m}t = \beta_1\mathbf{m}{t-1} + (1-\beta_1)\nabla_{\theta}J(\theta_{t-1})$
 
-$
-\mathbf{v}t = \beta_2\mathbf{v}{t-1} + (1-\beta_2)(\nabla_{\theta}J(\theta_{t-1}))^2
-$
+$\mathbf{v}t = \beta_2\mathbf{v}{t-1} + (1-\beta_2)(\nabla_{\theta}J(\theta_{t-1}))^2$
 
-$
-\hat{\mathbf{m}}_t = \frac{\mathbf{m}_t}{1-\beta_1^t}
-$
+$\hat{\mathbf{m}}_t = \frac{\mathbf{m}_t}{1-\beta_1^t}$
 
-$
-\hat{\mathbf{v}}_t = \frac{\mathbf{v}_t}{1-\beta_2^t}
-$
+$\hat{\mathbf{v}}_t = \frac{\mathbf{v}_t}{1-\beta_2^t}$
 
-$
-\theta_t = \theta_{t-1} - \alpha\frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon}
-$
+$\theta_t = \theta_{t-1} - \alpha\frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon}$
 
 **Where:**
 - $\mathbf{m}_t$: First moment estimate
@@ -221,9 +189,7 @@ It measures how well the model's predicted probability distribution matches the 
 
 **Its defined as:**
 
-$
-L = -\frac{1}{N}\sum_{i=1}^{N}[y_ilog(\hat{y}_i)+(1-y_i)log(1-\hat{y}_i)]
-$
+$L = -\frac{1}{N}\sum_{i=1}^{N}[y_ilog(\hat{y}_i)+(1-y_i)log(1-\hat{y}_i)]$
 
 For binary classification with predicted probability $\hat{y}$ and true label $y$:
 
@@ -260,17 +226,13 @@ $\mathbf{W}_1 \in \mathbb{R}^{3 \times 3 \times 3 \times 16}$
 
 *MaxPooling:*
 
-$
-\text{pool}_1(f_1)(m,n) = \begin{cases}\max\limits_{(i,j)\in W}f_1(i,j) & \text{if }(i,j)\in W_{m,n}\\
+$\text{pool}_1(f_1)(m,n) = \begin{cases}\max\limits_{(i,j)\in W}f_1(i,j) & \text{if }(i,j)\in W_{m,n}\\
 0 & \text{otherwise}
-\end{cases}
-$
+\end{cases}$
 
 *Simplifying:*
 
-$
-\text{pool}_1(f_1)(m,n) = \max\limits_{(i,j)\in W}f_1(i,j)
-$
+$\text{pool}_1(f_1)(m,n) = \max\limits_{(i,j)\in W}f_1(i,j)$
 
 Consider the same for the other two convolution blocks,
 <br>
@@ -299,9 +261,7 @@ Applying what was previously discussed, the model expects an
 <br>
 image of shape $\begin{bmatrix} 256, 256, 3 \end{bmatrix}$, plugging in these constants:
 
-$
-\mathbf{X} \in \mathbb{R}^{256 \times 256 \times 3}
-$
+$\mathbf{X} \in \mathbb{R}^{256 \times 256 \times 3}$
 
 ### Hidden Layers
 
