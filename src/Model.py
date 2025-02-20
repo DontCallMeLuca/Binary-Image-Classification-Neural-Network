@@ -1,3 +1,5 @@
+# -*- coding utf-8 -*-
+
 from keras.api.layers import Conv2D, MaxPooling2D, Dense, Flatten
 from keras.api.metrics import Precision, Recall, BinaryAccuracy
 from typing import Any, List, Tuple, Iterable
