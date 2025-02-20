@@ -81,6 +81,7 @@ class Model:
 			val: tf.data.Dataset
 			test: tf.data.Dataset
 			train, val, test = self.data.get_data()
+			prep_gpus()
 			self._fit_model(train, val)
 			print(self.evaluate_model(test))
 			self._save_model()
