@@ -381,11 +381,14 @@ model = Model(data)
 # Evaluate on test data
 precision, recall, accuracy = model.evaluate_model(test_data)
 
+# Load and resize image
 img = cv2.imread('myPicture.png')
 resize = tf.image.resize(img, (256,256))
 
+# Predict image class
 pred = model.predict(np.expand_dims(resize/255, 0))
 
+# Determine image category
 is_category_a: bool = pred <= 0.5
 ```
 
