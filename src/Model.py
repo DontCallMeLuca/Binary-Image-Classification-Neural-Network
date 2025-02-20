@@ -74,7 +74,7 @@ class Model:
 	def __init__(self, data: Data) -> None:
 		self.logdir: str = fr'{os.path.dirname(os.path.realpath(__file__))}\logs'
 		self.data: Data = data; path: str = os.path.dirname(os.path.realpath(__file__))
-		if os.path.exists(fr'{path}\trained\model.h5'):
+		if os.path.exists(fr'{path}\..\trained\model.h5'):
 			self._load_model()
 			self._summarize()
 		else:
@@ -132,4 +132,5 @@ class Model:
 		self.model.save(r'trained/model.h5')
 
 	def _load_model(self) -> None:
+		print('Loading model: trained/model.h5')
 		self.model: Sequential = load_model(r'trained/model.h5')

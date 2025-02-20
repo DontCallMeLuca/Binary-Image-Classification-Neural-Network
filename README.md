@@ -312,6 +312,33 @@ y(\mathbf{h}_1) = \sigma(\mathbf{W}_5\mathbf{h}_1 + \mathbf{b}_5)\\
 \sigma(x) = \frac{1}{1 + e^{-x}}
 ```
 
+## ✅ Practical Application
+
+To demonstrate proof of concept, I went ahead and trained the model on pneumonia xrays.
+<br>
+I feel I don't need to state the obvious on how this could be useful.
+<br>
+You can find the dataset here: [Dataset](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia)
+
+### Results
+Here's the results:
+- Accuracy: 99.91%
+- Loss: 0.3%
+- Epochs: 30
+
+### Visualizing
+
+<img src="img/normal_prediction.png" alt="Normal_Xray" width="700">
+<img src="img/pneumonia_prediction.png" alt="Pneumonia_Xray" width="700">
+
+###### _The model was indeed highly accurate at determining if the xray patient has pneumonia or not_
+
+### Trained Model
+I left the trained and compiled model at:
+```
+trained/Pneumonia_Model.h5
+```
+
 ## 🛠 Architecture
 
 ### Input Layer
@@ -368,10 +395,7 @@ $\mathbf{X} \in \mathbb{R}^{256 \times 256 \times 3}$
 ## 💻 Usage
 ```python
 from Model import Model, Data
-import cv2
-
-# Initialize GPU optimization
-prep_gpus()
+import tensorflow as tf
 
 # Create data pipeline
 data = Data('category_a', 'category_b')
@@ -382,15 +406,16 @@ model = Model(data)
 # Evaluate on test data
 precision, recall, accuracy = model.evaluate_model(test_data)
 
-# Load and resize image
-img = cv2.imread('myPicture.png')
-resize = tf.image.resize(img, (256,256))
+# Read and process image
+img = tf.io.read_file(image_path)
+img = tf.image.decode_image(img, channels=3)
+resize = tf.image.resize(img, (256, 256))
 
 # Predict image class
-pred = model.predict(np.expand_dims(resize/255, 0))
+pred = model.predict(np.expand_dims(resize/255, 0))[0][0]
 
 # Determine image category
-is_category_a: bool = pred <= 0.5
+is_category_a: bool = pred < 0.5
 ```
 
 ## 📊 Input Requirements
