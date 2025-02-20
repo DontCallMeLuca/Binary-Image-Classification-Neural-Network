@@ -6,11 +6,13 @@ from typing import Any, List, Tuple, Iterable
 from keras.api.models import load_model
 from keras.api import Sequential
 import tensorflow as tf
+from torch import cuda
 import os, imghdr
 
 def prep_gpus() -> None:
-	gpus: List[object] = tf.config.experimental.list_physical_devices('GPU')
-	for gpu in gpus: tf.config.experimental.set_memory_growth(gpu, True)
+	if cuda.is_available():
+		gpus: List[object] = tf.config.experimental.list_physical_devices('GPU')
+		for gpu in gpus: tf.config.experimental.set_memory_growth(gpu, True)
 
 class Data:
 
