@@ -71,7 +71,7 @@ FN &= |\{x \in \mathbb{D} \mid x \text{ is positive but classified as negative}\
 ### Neural Network Visualization
 ###### _It kinda looks like a cool jellyfish!_
 
-<img src="screenshots/NeuralNetwork.png" alt="Visualization" width="500">
+<img src="screenshots/NeuralNetwork.png" alt="Visualization" width="700">
 
 ### Summary
 - Model Type: **Sequential**
