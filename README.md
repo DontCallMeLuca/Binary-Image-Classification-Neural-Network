@@ -367,6 +367,7 @@ $\mathbf{X} \in \mathbb{R}^{256 \times 256 \times 3}$
 
 ## 💻 Usage
 ```python
+from Model import Model, Data
 import cv2
 
 # Initialize GPU optimization
