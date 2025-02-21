@@ -346,10 +346,10 @@ tensorboard --logdir=./logs/
 
 ### Visualizing
 
+###### _(Model's Predictions Visualization)_
+
 <img src="img/normal_prediction.png" alt="Normal_Xray" width="700">
 <img src="img/pneumonia_prediction.png" alt="Pneumonia_Xray" width="700">
-
-###### _(Model's Predictions Visualization)_
 
 ### Trained Model
 The trained and compiled model can be found at:
