@@ -263,30 +263,69 @@ flowchart LR
 
 ### Convolutional Blocks
 
-*Conv2D:*
+_**Conv2D:**_
+
+The *Conv2D* layer applies a 2D convolution operation to the input. This is a sliding window (kernel/filter)
+operation that extracts local patterns or features from the input (such as edges, textures, etc., in images).
+
+We can defined the *Conv2D* layer as:
 
 ```math
 f_1(\mathbf{X}) = \text{ReLU}(\mathbf{W}_1 * \mathbf{X} + \mathbf{b}_1)
 ```
 
-*Kernel:*
+**Where:**
+- $X$ is the input tensor
+- $W_1$ is the kernel matrix
+- $b_1$ is the bias term
+
+We can define the kernel as:
 
 ```math
 \mathbf{W}_1 \in \mathbb{R}^{3 \times 3 \times 3 \times 16}
 ```
 
-*MaxPooling2D:*
+So this is the convolution followed by the *ReLU* activation function.
+<br>
+The formula corrisponds to the following operation:
 
+```math
+f_1(X) = ReLU(\sum_{m=0}^{3-1}\sum_{n=0}^{3-1}\sum_{c=0}^{3-1}x_{i+m,j+n,c}\cdot w_{m,n,c,j}+b_k)
+```
+
+**Where:**
+- $x_{i+m,j+n,c}$ is the input
+- $w_{m,n,c,j}$ are the kernel weights
+- $b_k$ is the bias for each output challel $k$
+
+_**MaxPooling2D:**_
+
+The *MaxPooling2D* layer reduces the spatial dimensions of the input by taking the maximum value from a defined region (typically a window of size $2x2$ or $3x3$).
+
+It can be defined as follows:
 ```math
 \text{pool}_1(f_1)(m,n) = \begin{cases}\max\limits_{(i,j)\in W}f_1(i,j) & \text{if }(i,j)\in W_{m,n}\\
 0 & \text{otherwise}
 \end{cases}
 ```
 
+**Where:**
+- $f_1(i,j)$ refers to the result of the convolution from the previous layer (i.e., the $f_1(X)$ output).
+- $W_{m,n}$ refers to the pooling window centered at the position $(m,n)$.
+- The operation takes the maximum values of the window $W$ over each channel.
+
 *Simplifying:*
 
 ```math
 \text{pool}_1(f_1)(m,n) = \max\limits_{(i,j)\in W}f_1(i,j)
+```
+
+This means for each position $(m,n)$ in the output feature map, the maximum value from the corresponding region $W$ in $f_1(X)$ can be taken.
+
+The function can be more formally expressed as:
+
+```math
+\text{pool}_1(f_1)(m,n) = \max\limits_{(i,j)\in W_{m,n}}f_1(i,j)
 ```
 
 Consider the same for the other two convolution blocks,
@@ -295,25 +334,107 @@ except the amount of neurons and parameters change.
 
 ### Dense Layers
 
-*Flatten:*
+_**Flatten:**_
+
+A Flatten layer is usedto convert a multi-dimensional tensor into a one-dimensional vector while retaining the batch size.
+<br>
+The mathematical ooperation for flattening is relatively simple:
+<br>
+It takes an input tensor of shape:
+
+```math
+\begin{bmatrix}
+N & d_1,d_2,...,d_n
+\end{bmatrix}
+```
+
+Where $N$ is the batch size.
+It then reshapes it into a one-dimensional vector of shape:
+
+```math
+\begin{bmatrix}
+N & d_1\cdotp d_2\cdotp\cdotp\cdotp\cdotp d_n
+\end{bmatrix}
+```
+
+The flattening combines the dimensions $d_1,d_2,...,d_n$ into a single dimension, resulting in a vector of length:
+
+```math
+d_1\times d_2 \times ... \times d_n
+```
+
+If $X$ i the input tensor and $X_{i,j,k}$ represents the elements of this tensor, then after flattening the output vector $y$ can be represented as:
+
+```math
+y_i = X_{i,d_1,d_2,...,d_n}
+```
+
+**Where:**
+
+- $i$ is the index of the flattened vector, starting from 0.
+- The values $X_{i,d_1,d_2,...,d_n}$ are taken in a row-major order (i.e., elements are flattened by traversing all dimensions in sequence).
+
+Therefore, given a batch size of 16384, we can define the function as follows:
 
 ```math
 \text{flat}(\text{pool}_3) \in \mathbb{R}^{16384}
 ```
 
-*Dense Layer:*
+_**Dense Layer:**_
+
+The *Dense* (fully connected) layer connects each neuron from the previous layer to every neuron in the current layer.
+
+The dense layer computes the output $y$ as follows:
 
 ```math
-h_1(\text{flat}) = \text{ReLU}(\mathbf{W}_4\text{flat} + \mathbf{b}_4)\\
-\mathbf{W}_4 \in \mathbb{R}^{16384 \times 256}
+y = XW+b
 ```
 
-*Output Layer:*
+**Where:**
+- $X$ is the input tensor
+- $W$ is the weight matrix
+- $b$ is the bias vector
+
+Including a non-linear activation function $f$, then the final output is:
 
 ```math
-y(\mathbf{h}_1) = \sigma(\mathbf{W}_5\mathbf{h}_1 + \mathbf{b}_5)\\
-\mathbf{W}_5 \in \mathbb{R}^{256 \times 1}\\
+y = f(XW+b)
+```
+
+Given our known input tensor:
+
+```math
+X_4 \in \mathbb{R}^{16384 \times 256}
+```
+
+And applying our known constants:
+
+```math
+h_1(\text{flat}) = \text{ReLU}(X_4\text{flat} + \mathbf{b}_4)
+```
+
+_**Output Layer:**_
+
+The final output layer is also a *Dense* layer, however to get our desired binary output,
+<br>
+we apply the sigmoid activation function (rather than ReLU):
+
+```math
+y(\mathbf{h}_1) = \sigma(\mathbf{W}_5\mathbf{h}_1 + \mathbf{b}_5)
+```
+
+**Where:**
+
+- The sigmoid function is defined as:
+
+```math
 \sigma(x) = \frac{1}{1 + e^{-x}}
+```
+
+- $\mathbf{W}_5$ is defined as:
+
+```math
+\mathbf{W}_5 \in \mathbb{R}^{256 \times 1}
 ```
 
 ## ✅ Practical Application
