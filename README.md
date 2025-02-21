@@ -284,6 +284,7 @@ We can define the kernel as:
 ```math
 \mathbf{W}_1 \in \mathbb{R}^{3 \times 3 \times 3 \times 16}
 ```
+<br>
 
 So this is the convolution followed by the *ReLU* activation function.
 <br>
@@ -300,7 +301,7 @@ f_1(X) = ReLU(\sum_{m=0}^{3-1}\sum_{n=0}^{3-1}\sum_{c=0}^{3-1}x_{i+m,j+n,c}\cdot
 
 _**MaxPooling2D:**_
 
-The *MaxPooling2D* layer reduces the spatial dimensions of the input by taking the maximum value from a defined region (typically a window of size $2x2$ or $3x3$).
+The *MaxPooling2D* layer reduces the spatial dimensions of the input by taking the maximum value from a defined region (typically a window of size $2\times 2$ or $3\times 3$).
 
 It can be defined as follows:
 ```math
