@@ -328,7 +328,7 @@ You can find the dataset here: [Dataset](https://www.kaggle.com/datasets/paultim
 - Epochs: 30
 
 To see the training logs and results, view the TensorBoard logfile:
-![TensorBoardLog](./logs/pneumonia.events.out.tfevents.1740090494.LUCA.15816.0.v2)
+[TensorBoardLog](logs/pneumonia.events.out.tfevents.1740090494.LUCA.15816.0.v2)
 
 **To view the log:**
 
