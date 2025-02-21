@@ -146,7 +146,7 @@ Generally speaking, its because it provides a clear binary output.
 The **Sigmoid** function is defined as:
 
 ```math
-f(x) = \frac{L}{1 + e^{-k(x-x_0)}}
+\sigma(x) = \frac{L}{1 + e^{-k(x-x_0)}}
 ```
 
 **Where:**
@@ -158,7 +158,7 @@ L = 1, k = 1, x_0 = 0
 **Applying these to the equation:**
 
 ```math
-f(x) = \frac{1}{1 + e^{-x}}
+\sigma(x) = \frac{1}{1 + e^{-x}}
 ```
 
 **Plotting this function out:**
