@@ -10,6 +10,10 @@ Please keep in mind that this project was made a long, **long**, time ago.
 <br>
 It's also quite small and not nearly as sophisticated as I would make it today.
 
+## 🌐 External Libraries
+- [Tensorflow/Keras](https://www.tensorflow.org/)
+- [PyTorch](https://pytorch.org/)
+
 ## 🔢 Mathematical Foundation
 
 ### Data Preprocessing
@@ -477,6 +481,10 @@ TensorBoard logs are stored in:
 ```
 logs/
 ```
+
+## ✨ Future Improvements
+- Port to C++ using [TorchLib](https://pytorch.org/cppdocs/)
+- C++ code rewrite to improve existing code further
 
 ## 📃 License
 This project uses the `GNU GENERAL PUBLIC LICENSE v3.0` license
