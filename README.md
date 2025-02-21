@@ -6,9 +6,9 @@
 
 This project implements a Convolutional Neural Network (CNN) for binary image classification. The model features automated data preprocessing, GPU optimization, and comprehensive evaluation metrics.
 
-Please keep in mind that this project was made a long, **long**, time ago. I did my best to explain it here.
+Please keep in mind that this project was made a long, **long**, time ago.
 <br>
-It's also quite small and not nearly as sophisticated as I would probably make it today.
+It's also quite small and not nearly as sophisticated as I would make it today.
 
 ## 🔢 Mathematical Foundation
 
@@ -314,9 +314,11 @@ y(\mathbf{h}_1) = \sigma(\mathbf{W}_5\mathbf{h}_1 + \mathbf{b}_5)\\
 
 ## ✅ Practical Application
 
-To demonstrate proof of concept, I went ahead and trained the model on pneumonia xrays.
+To demonstrate proof of concept, the model was trained on pneumonia xrays.
 <br>
-I feel I don't need to state the obvious on how this could be useful.
+This of course can be used in medical applications, however the architecture
+<br>
+can be trained on any data, and can provide applications in all fields
 <br>
 You can find the dataset here: [Dataset](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia)
 
@@ -325,15 +327,28 @@ You can find the dataset here: [Dataset](https://www.kaggle.com/datasets/paultim
 - Loss: 0.3%
 - Epochs: 30
 
+To see the training logs and results, view the TensorBoard logfile:
+![TensorBoardLog](./logs/pneumonia.events.out.tfevents.1740090494.LUCA.15816.0.v2)
+
+**To view the log:**
+
+```sh
+tensorboard --logdir=./logs/
+```
+
+### Learning Curves
+
+<img src="img/TrainingResults.png" alt="LearningCurves" width="700">
+
 ### Visualizing
 
 <img src="img/normal_prediction.png" alt="Normal_Xray" width="700">
 <img src="img/pneumonia_prediction.png" alt="Pneumonia_Xray" width="700">
 
-###### _The model was indeed highly accurate at determining if the xray patient has pneumonia or not_
+###### _(Model's Predictions Visualization)_
 
 ### Trained Model
-I left the trained and compiled model at:
+The trained and compiled model can be found at:
 ```
 trained/Pneumonia_Model.h5
 ```
@@ -342,11 +357,19 @@ trained/Pneumonia_Model.h5
 
 ### Input Layer
 
-Applying what was previously discussed, the model expects an
+Applying what was previously discussed,
 <br>
-image of shape $\begin{bmatrix} 256, 256, 3 \end{bmatrix}$, plugging in these constants:
+the model expects an image of shape:
 
-$\mathbf{X} \in \mathbb{R}^{256 \times 256 \times 3}$
+```math
+\begin{bmatrix} 256, 256, 3 \end{bmatrix}
+```
+
+**Plugging in these constants:**
+
+```math
+\mathbf{X} \in \mathbb{R}^{256 \times 256 \times 3}
+```
 
 ### Hidden Layers
 
