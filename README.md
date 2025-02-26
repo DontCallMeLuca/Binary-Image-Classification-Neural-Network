@@ -6,9 +6,13 @@
 
 This project implements a Convolutional Neural Network (CNN) for binary image classification. The model features automated data preprocessing, GPU optimization, and comprehensive evaluation metrics.
 
+Both C++ and Python implementations, using Tensorflow and Torchlib (PyTorch) respectively are provided.
+
+It was originally made in python using Tensorflow, but was recently ported to C++, see: [C++ Port](#-c-port)
+
 ## 🌐 External Libraries
 - [Tensorflow/Keras](https://www.tensorflow.org/)
-- [PyTorch](https://pytorch.org/)
+- [TorchLib](https://pytorch.org/cppdocs/)
 
 ## 🔢 Mathematical Foundation
 
@@ -524,7 +528,11 @@ the model expects an image of shape:
 - Non-Trainable Parameters: **0**
 - Optimized Parameters: **2**
 
-## 🔧 Features
+## 🔧 C++ Port
+
+The model was recently ported to C++ using TorchLib. It was originally implemented in python using Tensorflow. There are some minor differences, particularly in how the data is prepared (i.e. data directory cleaning).
+
+## ✨ Features
 - GPU memory optimization
 - Automated image format validation
 - Data scaling and preprocessing
@@ -533,8 +541,12 @@ the model expects an image of shape:
 - Model persistence (Save & Load)
 
 ## 💻 Usage
+
+### Python
+
 ```python
-from Model import Model, Data
+from model.model import Model
+from model.data import Data
 import tensorflow as tf
 
 # Create data pipeline
@@ -556,6 +568,48 @@ pred = model.predict(np.expand_dims(resize/255, 0))[0][0]
 
 # Determine image category
 is_category_a: bool = pred < 0.5
+```
+
+### C++
+
+Please note there are extensive steps required in order to setup a LibTorch project,
+<br>
+please keep this in mind before attempting to implement this example.
+
+```cpp
+int main(void)
+{
+    try
+    {
+        // Create dataset
+        Dataset dataset("path/to/categoryA", "path/to/categoryB");
+        
+        // Create model
+        Model::CNN model;
+        
+        // Train model
+        Model::train(model, dataset, 32, 30);
+        
+        std::cout << "Training completed successfully!" << std::endl;
+        
+        // For inference later
+        model->eval();
+        torch::NoGradGuard no_grad;
+        
+        // Example of loading an image for inference
+        torch::Tensor img = load_single_image("path/to/test/image.jpg");
+        torch::Tensor output = model->forward(img.unsqueeze(0));
+        float prediction = output.item<float>();
+        std::cout << "Prediction: " << prediction << std::endl;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+
+    return 0;
+}
 ```
 
 ## 📊 Input Requirements
@@ -581,13 +635,17 @@ Later, They are expected as arguments in the model.
 - Optimizer: Adam
 - Loss: Binary Cross Entropy
 - Training epochs: 30
-- Batch size: Default TensorFlow
+- Batch size: 32
 - Train-Test-Val split: 70%-20%-10%
 
 ## 💾 Model Persistence
 Models are automatically saved to:
-```
+```c
+// For Tensorflow
 trained/model.h5
+
+// For LibTorch
+trained/model.pt
 ```
 
 ## 📊 Logging
@@ -595,10 +653,6 @@ TensorBoard logs are stored in:
 ```
 logs/
 ```
-
-## ✨ Future Improvements
-- Port to C++ using [TorchLib](https://pytorch.org/cppdocs/)
-- C++ code rewrite to further improve existing code
 
 ## 📃 License
 This project uses the `GNU GENERAL PUBLIC LICENSE v3.0` license
