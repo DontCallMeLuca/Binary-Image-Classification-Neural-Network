@@ -6,10 +6,6 @@
 
 This project implements a Convolutional Neural Network (CNN) for binary image classification. The model features automated data preprocessing, GPU optimization, and comprehensive evaluation metrics.
 
-Please keep in mind that this project was made a long, **long**, time ago.
-<br>
-It's also quite small and not nearly as sophisticated as I would make it today.
-
 ## 🌐 External Libraries
 - [Tensorflow/Keras](https://www.tensorflow.org/)
 - [PyTorch](https://pytorch.org/)
@@ -110,7 +106,7 @@ FN &= |\{x \in \mathbb{D} \mid x \text{ is positive but classified as negative}\
 **1. ReLU**
 
 The model applies the **Rectified Linear Unit (ReLU)** activation function
-to virtually all hidden layers, except for the last dense layer.
+to all hidden layers, except for the last dense layer.
 <br><br>
 The **ReLU** function is defined as:
 
@@ -128,7 +124,7 @@ x & \text{if } x > 0
 
 The function essentially outputs $0$ for negative inputs and $x$ for positive inputs.
 This helps prevent the vanishing gradient problem, making deep learning models train faster.
-However, it's important to note that it could suffer from the "dying ReLU" problem,
+However, it's important to note that the function could suffer from the "dying ReLU" problem,
 where neurons can become inactive.
 
 **Plotting this function out:**
@@ -139,7 +135,7 @@ where neurons can become inactive.
 **2. Sigmoid**
 
 On the final output dense layer, a single neuron, applies a sigmoid activation function.
-The benefits of this are described later on.
+The benefits of this methodology are described later on.
 <br>
 Generally speaking, its because it provides a clear binary output.
 <br><br>
@@ -166,14 +162,14 @@ L = 1, k = 1, x_0 = 0
 <img src="https://hvidberrrg.github.io/deep_learning/activation_functions/assets/sigmoid_function.png" alt="Sigmoid Plot" width="700">
 <br>
 
-Visualizing the function, we can see that it's perfect for a binary problem
+By visualizing the function, we can see that it's perfect to solve a binary problem
 <br>
-since it has an output range of $(0,1)$ which is perfect for representing probabilities.
+since it represents an output range of $(0,1)$ which is perfect for probabilities.
 <br>
-This makes the function perfect to provide a clear binary output.
+This prospect makes the function perfect to provide a clear binary output.
 
 ### Adam Optimizer
-The model makes use of the adam optimizer, Adam is a powerful optimization algorithm that combines the benefits of SGD
+The model makes use of the Adam Optimizer, which is a powerful optimization algorithm that combines the benefits of SGD
 <br>
 (Stochastic Gradient Descent) with momentum and adaptive learning rates. It adjusts learning rates dynamically for each parameter.
 <br>
@@ -221,11 +217,11 @@ flowchart LR
 
 ### Binary Cross-Entropy Loss
 
-The model makes use of the **BCE** loss function, its the standard loss function used in binary classification problems.
+The model makes use of the **BCE** loss function, which is the standard loss function used in binary classification problems.
 <br>
 It measures how well the model's predicted probability distribution matches the actual labels.
 
-**Its defined as:**
+**It is defined as:**
 
 ```math
 L = -\frac{1}{N}\sum_{i=1}^{N}[y_ilog(\hat{y}_i)+(1-y_i)log(1-\hat{y}_i)]
@@ -256,19 +252,19 @@ flowchart LR
     O --> P[Backpropagate]
 ```
 
-**This works well because:**
-- Porbability-Based Loss $\rightarrow$ Since *BCE* is based on log probabilitiy, it ensures that predictions are as close to $0$ or $1$ as possible.
-- Penalizes Incorrect Confident Predictions $\rightarrow$ Large penalties for being confidently wrong (i.e., predicting $0.99$ when the true label is $0$).
-- Handles Imbalanced Datasets Well $\rightarrow$ If class distribution is skewed *BCE* still provides meaningful gradients.
+**This function works well due to:**
+- Probability-Based Loss $\rightarrow$ Since *BCE* is based on log probabilitiy, it ensures that predictions are as close to $0$ or $1$ as possible.
+- Penalization of Incorrect Confident Predictions $\rightarrow$ Large penalties for being confidently wrong (i.e., predicting $0.99$ when the true label is $0$).
+- Handling Imbalanced Datasets Well $\rightarrow$ If class distribution is skewed *BCE* still provides meaningful gradients.
 
 ### Convolutional Blocks
 
 _**Conv2D:**_
 
 The *Conv2D* layer applies a 2D convolution operation to the input. This is a sliding window (kernel/filter)
-operation that extracts local patterns or features from the input (such as edges, textures, etc., in images).
+operation that extracts local patterns or features from the input (such as edges, textures, etc. in images).
 
-We can defined the *Conv2D* layer as:
+We define the *Conv2D* layer as:
 
 ```math
 f_1(\mathbf{X}) = \text{ReLU}(\mathbf{W}_1 * \mathbf{X} + \mathbf{b}_1)
@@ -279,16 +275,14 @@ f_1(\mathbf{X}) = \text{ReLU}(\mathbf{W}_1 * \mathbf{X} + \mathbf{b}_1)
 - $W_1$ is the kernel matrix
 - $b_1$ is the bias term
 
-We can define the kernel as:
+We define the kernel as:
 
 ```math
 \mathbf{W}_1 \in \mathbb{R}^{3 \times 3 \times 3 \times 16}
 ```
 <br>
 
-So this is the convolution followed by the *ReLU* activation function.
-<br>
-The formula corrisponds to the following operation:
+The following is the convolution function applying *ReLU* activation function:
 
 ```math
 f_1(X) = ReLU(\sum_{m=0}^{3-1}\sum_{n=0}^{3-1}\sum_{c=0}^{3-1}x_{i+m,j+n,c}\cdot w_{m,n,c,j}+b_k)
@@ -297,7 +291,7 @@ f_1(X) = ReLU(\sum_{m=0}^{3-1}\sum_{n=0}^{3-1}\sum_{c=0}^{3-1}x_{i+m,j+n,c}\cdot
 **Where:**
 - $x_{i+m,j+n,c}$ is the input
 - $w_{m,n,c,j}$ are the kernel weights
-- $b_k$ is the bias for each output challel $k$
+- $b_k$ is the bias for each output channel $k$
 
 _**MaxPooling2D:**_
 
@@ -321,7 +315,7 @@ It can be defined as follows:
 \text{pool}_1(f_1)(m,n) = \max\limits_{(i,j)\in W}f_1(i,j)
 ```
 
-This means for each position $(m,n)$ in the output feature map, the maximum value from the corresponding region $W$ in $f_1(X)$ can be taken.
+Which means that for each position $(m,n)$ in the output feature map, the maximum value can be taken from the corresponding region $W$ in $f_1(X)$.
 
 The function can be more formally expressed as:
 
@@ -337,9 +331,9 @@ except the amount of neurons and parameters change.
 
 _**Flatten:**_
 
-A Flatten layer is usedto convert a multi-dimensional tensor into a one-dimensional vector while retaining the batch size.
+A Flatten layer is used to convert a multi-dimensional tensor into a one-dimensional vector, while retaining the batch size.
 <br>
-The mathematical ooperation for flattening is relatively simple:
+The mathematical operation for flattening is relatively simple:
 <br>
 It takes an input tensor of shape:
 
@@ -350,7 +344,7 @@ N & d_1,d_2,...,d_n
 ```
 
 Where $N$ is the batch size.
-It then reshapes it into a one-dimensional vector of shape:
+The layer reshapes it into a one-dimensional vector of shape:
 
 ```math
 \begin{bmatrix}
@@ -364,7 +358,7 @@ The flattening combines the dimensions $d_1,d_2,...,d_n$ into a single dimension
 d_1\times d_2 \times ... \times d_n
 ```
 
-If $X$ i the input tensor and $X_{i,j,k}$ represents the elements of this tensor, then after flattening the output vector $y$ can be represented as:
+If $X$ is the input tensor and $X_{i,j,k}$ represents the elements of this tensor, the output vector $y$ after flattening can be represented as:
 
 ```math
 y_i = X_{i,d_1,d_2,...,d_n}
@@ -375,7 +369,7 @@ y_i = X_{i,d_1,d_2,...,d_n}
 - $i$ is the index of the flattened vector, starting from 0.
 - The values $X_{i,d_1,d_2,...,d_n}$ are taken in a row-major order (i.e., elements are flattened by traversing all dimensions in sequence).
 
-Therefore, given a batch size of 16384, we can define the function as follows:
+Therefore, given a batch size of $16384$, we can define the function as follows:
 
 ```math
 \text{flat}(\text{pool}_3) \in \mathbb{R}^{16384}
@@ -393,7 +387,7 @@ y = XW+b
 
 **Where:**
 - $X$ is the input tensor
-- $W$ is the weight matrix
+- $W$ is the weights matrix
 - $b$ is the bias vector
 
 Including a non-linear activation function $f$, then the final output is:
@@ -440,9 +434,9 @@ y(\mathbf{h}_1) = \sigma(\mathbf{W}_5\mathbf{h}_1 + \mathbf{b}_5)
 
 ## ✅ Practical Application
 
-To demonstrate proof of concept, the model was trained on pneumonia xrays.
+To demonstrate a proof of concept, the model was trained on pneumonia xrays.
 <br>
-This of course can be used in medical applications, however the architecture
+This model can be used in medical applications, however the architecture
 <br>
 can be trained on any data, and can provide applications in all fields
 <br>
@@ -519,10 +513,8 @@ the model expects an image of shape:
 <img src="img/AlexNet.png" alt="Visualization">
 
 ### LeNet Style Visualization
-###### _Note that the 14400 sized vector is missing here because its just too large_
+###### _Note that the 14400 sized vector is missing here because it's just too large_
 <img src="img/LeNet.png" alt="Visualization" width="700">
-
-#### _Sorry for the low resolution! It's hard to fit these massive visualizations in a readme document!_
 
 ### Summary
 - Model Type: **Sequential**
@@ -582,15 +574,15 @@ data/
     └── image4.png
 ```
 
-Feel free to rename the child directories to whatever you want.
-They are expected as arguments in the model later anyways.
+Feel free to rename the child directories to whatever you'd like.
+Later, They are expected as arguments in the model.
 
 ## ⚙️ Model Parameters
 - Optimizer: Adam
 - Loss: Binary Cross Entropy
 - Training epochs: 30
 - Batch size: Default TensorFlow
-- Train-Test-Val split: 70-20-10
+- Train-Test-Val split: 70%-20%-10%
 
 ## 💾 Model Persistence
 Models are automatically saved to:
@@ -606,7 +598,7 @@ logs/
 
 ## ✨ Future Improvements
 - Port to C++ using [TorchLib](https://pytorch.org/cppdocs/)
-- C++ code rewrite to improve existing code further
+- C++ code rewrite to further improve existing code
 
 ## 📃 License
 This project uses the `GNU GENERAL PUBLIC LICENSE v3.0` license
